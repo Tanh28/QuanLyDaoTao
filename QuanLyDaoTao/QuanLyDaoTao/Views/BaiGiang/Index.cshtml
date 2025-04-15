@@ -1,0 +1,76 @@
+@model IEnumerable<QuanLyDaoTaoWeb.Models.BaiGiang>
+@using Microsoft.AspNetCore.Identity
+@using QuanLyDaoTaoWeb.Controllers
+@using QuanLyDaoTaoWeb.Models
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+
+@{
+    ViewData["Title"] = "Danh Sách Bài Giảng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Danh Sách Bài Giảng</h1>
+
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Mã Bài Giảng </th>
+                    <th>Mã Môn Học</th>
+                    <th>Tiêu Đề</th>
+                    <th>Nội Dung</th>
+                    @if(User.IsInRole("Admin")||User.IsInRole("GiangVien")){
+                        <th>Thao tác</th>
+                    }
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaBG</td>
+                        <td>@item.MaMH</td>
+                        <td>@item.TieuDe</td>
+                        <td>@item.NoiDung</td>
+                        <td>
+                        @if(User.IsInRole("Admin") || User.IsInRole("GiangVien")){
+                            <div class="table-actions">
+                                <a asp-action="Edit" asp-route-id="@item.MaBG" class="btn btn-secondary">
+                                    <i class="fas fa-edit"></i>
+                                    <span>Sửa</span>
+                                </a>
+                        @if(User.IsInRole("Admin")){
+                                <button onclick="deleteItem(@item.MaBG)" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                    <span>Xóa</span>
+                                </button>
+                            }
+                            </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if(User.IsInRole("Admin")|| User.IsInRole("GiangVien")){
+<div class="action-buttons">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Thêm mới
+            </a>
+        </div>
+        }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}

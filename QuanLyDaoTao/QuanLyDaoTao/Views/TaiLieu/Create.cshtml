@@ -1,0 +1,62 @@
+@model QuanLyDaoTaoWeb.Models.TaiLieu
+
+@{
+    ViewData["Title"] = "Thêm Tài Liệu";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Thêm Mới Tài Liệu</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MaTL" class="form-label"></label>
+                        <input asp-for="MaTL" class="form-control" maxlength="10" />
+                        <span asp-validation-for="MaTL" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TenTL" class="form-label"></label>
+                        <input asp-for="TenTL" class="form-control" maxlength="50" />
+                        <span asp-validation-for="TenTL" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="BaiGiang" class="form-label">Bài Giảng</label>
+                        <select asp-for="MaBG" asp-items="ViewBag.BaiGiangList" class="form-select">
+                            <option value="">-- Chọn Bài Giảng --</option>
+                        </select>
+                        <span asp-validation-for="MaBG" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DuongDan" class="form-label">Tệp tài liệu</label>
+                        <input type="file" name="fileUpload" class="form-control" />
+                        <span asp-validation-for="DuongDan" class="text-danger"></span>
+                        <small class="text-muted">Định dạng hỗ trợ: .pdf, .doc, .docx, .ppt, .pptx</small>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,73 @@
+@model QuanLyDaoTaoWeb.Models.ChuongTrinhDaoTao
+
+@{
+    ViewData["Title"] = "Chỉnh Sửa Chương Trình Đào Tạo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Chỉnh Sửa Chương Trình Đào Tạo</h1>
+    </div>
+
+    <div class="card-body">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var modelError in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@modelError.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MaCTDT" />
+
+            <div class="form-group">
+                <label asp-for="MaKhoa" class="control-label">Khoa <span class="text-danger">*</span></label>
+                <select asp-for="MaKhoa" asp-items="ViewBag.KhoaList" class="form-control" required>
+                    <option value="">-- Chọn Khoa --</option>
+                </select>
+                <span asp-validation-for="MaKhoa" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TenCTDT" class="control-label">Tên chương trình đào tạo <span class="text-danger">*</span></label>
+                <input asp-for="TenCTDT" class="form-control" required />
+                <span asp-validation-for="TenCTDT" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NamBatDau" class="control-label">Năm bắt đầu <span class="text-danger">*</span></label>
+                <input asp-for="NamBatDau" class="form-control" type="number" min="2000" max="2030" required />
+                <span asp-validation-for="NamBatDau" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Trạng thái</label>
+                <div class="d-flex align-items-center gap-2">
+                    <input asp-for="TrangThai" type="checkbox" />
+                    <label asp-for="TrangThai">Kích hoạt</label>
+                </div>
+                <span asp-validation-for="TrangThai" class="text-danger"></span>
+            </div>
+
+            <div class="form-group d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Cập nhật
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

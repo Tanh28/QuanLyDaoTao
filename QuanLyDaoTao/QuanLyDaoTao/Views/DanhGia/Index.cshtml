@@ -1,0 +1,75 @@
+@model IEnumerable<QuanLyDaoTaoWeb.Models.DanhGia>
+
+@{
+    ViewData["Title"] = "Quản Lý Đánh Giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if(User.IsInRole("Admin") || User.IsInRole("SinhVien")){
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Danh Sách Đánh Giá</h1>
+
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.MaDG)</th>
+                    <th>@Html.DisplayNameFor(m => m.SinhVien.HoTen)</th>
+                    <th>@Html.DisplayNameFor(m => m.MonHoc.TenMH)</th>
+                    <th>@Html.DisplayNameFor(m => m.DiemDanhGia)</th>
+                    <th>@Html.DisplayNameFor(m => m.NgayDanhGia)</th>
+                    @if(User.IsInRole("Admin")){
+                        <th>Thao tác</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaDG</td>
+                        <td>@item.SinhVien?.HoTen</td>
+                        <td>@item.MonHoc?.TenMH</td>
+                        <td>
+                            <span class="badge bg-@(item.DiemDanhGia >= 5 ? "success" : "danger")">
+                                @item.DiemDanhGia
+                            </span>
+                        </td>
+                        <td>@item.NgayDanhGia.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>
+                            <div class="table-actions">
+                                <a asp-action="Edit" asp-route-id="@item.MaDG"
+                                   class="btn btn-secondary" title="Sửa">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.MaDG"
+                                   class="btn btn-danger" title="Xóa">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="action-buttons">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Thêm mới
+            </a>
+        </div>
+</div>
+}
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json'
+                },
+                order: [[4, 'desc']]
+            });
+        });
+    </script>
+}

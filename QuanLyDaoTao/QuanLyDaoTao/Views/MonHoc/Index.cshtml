@@ -1,0 +1,74 @@
+@model IEnumerable<QuanLyDaoTaoWeb.Models.MonHoc>
+
+@{
+    ViewData["Title"] = "Quản Lý Môn Học";
+}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Danh Sách Môn Học</h1>
+
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.MaMH)</th>
+                    <th>@Html.DisplayNameFor(m => m.TenMH)</th>
+                    <th>@Html.DisplayNameFor(m => m.SoTinChi)</th>
+                    <th>@Html.DisplayNameFor(m => m.Khoa.TenKhoa)</th>
+                    <th>Số lớp phân công</th>
+                    @if(User.IsInRole("Admin")){
+                        <th>Thao tác</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.MaMH</td>
+                        <td>@item.TenMH</td>
+                        <td>@item.SoTinChi</td>
+                        <td>@item.Khoa?.TenKhoa</td>
+                        <td>@item.PhanCongGiangDays?.Count()</td>
+                        <td>
+                            <div class="table-actions">
+                                <a asp-action="Edit" asp-route-id="@item.MaMH"
+                                   class="btn btn-secondary" title="Sửa">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Delete" asp-route-id="@item.MaMH"
+                                   class="btn btn-danger" title="Xóa">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if(User.IsInRole("Admin")){
+<div class="action-buttons">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Thêm mới
+            </a>
+        </div>
+        }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Vietnamese.json'
+                }
+            });
+        });
+    </script>
+}

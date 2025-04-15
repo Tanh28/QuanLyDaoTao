@@ -1,0 +1,56 @@
+@model QuanLyDaoTaoWeb.Models.DangKyLopHoc
+
+@{
+    ViewData["Title"] = "Thêm Đăng Ký Lớp Học";
+}
+
+<div class="container-fluid py-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Thêm Mới Đăng Ký Lớp Học</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateDangKyLopHoc" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MaSV" class="form-label"></label>
+                        <select asp-for="MaSV" asp-items="ViewBag.SinhVienList" class="form-select">
+                            <option value="">-- Chọn Sinh Viên --</option>
+                        </select>
+                        <span asp-validation-for="MaSV" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MaLopHoc" class="form-label"></label>
+                        <select asp-for="MaLopHoc" asp-items="ViewBag.LopHocList" class="form-select">
+                            <option value="">-- Chọn Lớp Học --</option>
+                        </select>
+                        <span asp-validation-for="MaLopHoc" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    <a asp-action="DangKyLopHocIndex" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function() {
+            $('#MaSV, #MaLopHoc').select2({
+                theme: 'bootstrap4'
+            });
+        });
+    </script>
+}
